@@ -39,13 +39,14 @@
                         <span class="pt-gradient-text">ひとつのページに。</span>
                     </h1>
                     <p class="lead mt-3">
-                        ニックネーム・自己紹介・好きなもの・推し・SNS リンクを 1 ページにまとめて、URL ひとつで世界に届ける。
+                        ニックネーム・自己紹介・好きなもの・推し・SNS リンクを 1 ページにまとめて、URL ひとつで世界に届ける。<br>
+                        基本機能はずっと無料で使えます。
                     </p>
                     <div class="d-flex flex-column flex-sm-row gap-2 justify-content-center mt-4">
                         <a href="{{ route('register') }}" class="btn btn-primary btn-lg px-4">無料ではじめる</a>
                         <a href="#features" class="btn btn-outline-secondary btn-lg px-4">機能を見る</a>
                     </div>
-                    <p class="small text-muted mt-3 mb-0">登録 30 秒・クレジットカード不要</p>
+                    <p class="small text-muted mt-3 mb-0">登録 30 秒で完了</p>
                 </div>
             </section>
 
@@ -93,7 +94,7 @@
                 <div class="container">
                     <div class="rounded-4 text-center p-5" style="background: var(--pt-gradient);">
                         <h2 class="text-white fw-bold mb-2">あなたの「すき」を、世界へ。</h2>
-                        <p class="text-white opacity-75 mb-4">アカウント作成は 30 秒。今すぐあなただけの URL を手に入れよう。</p>
+                        <p class="text-white opacity-75 mb-4">30 秒で、あなただけの URL を。<br>基本機能はずっと無料で使えます。</p>
                         <a href="{{ route('register') }}" class="btn btn-light btn-lg px-4 fw-semibold">無料ではじめる</a>
                     </div>
                 </div>
