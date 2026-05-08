@@ -49,6 +49,11 @@ class Profile extends Model
         return $this->hasMany(Favorite::class)->orderBy('sort_order');
     }
 
+    public function socialLinks(): HasMany
+    {
+        return $this->hasMany(SocialLink::class)->orderBy('sort_order');
+    }
+
     public function getPublicUrlAttribute(): string
     {
         return route('public.profile', ['slug' => $this->slug]);

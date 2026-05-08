@@ -50,6 +50,24 @@
                     </div>
                 </div>
 
+                @if ($profile->socialLinks->isNotEmpty())
+                    <div class="card border-0 shadow-sm mt-4">
+                        <div class="card-body p-4 p-md-5">
+                            <h2 class="h6 fw-bold text-muted mb-3 text-center" style="letter-spacing: 0.1em;">LINKS</h2>
+                            <div class="d-grid gap-2">
+                                @foreach ($profile->socialLinks as $link)
+                                    <a href="{{ $link->url }}" target="_blank" rel="noopener noreferrer"
+                                       class="btn btn-outline-secondary text-start d-inline-flex align-items-center gap-3 py-2">
+                                        <i class="bi {{ $link->iconClass() }} fs-5"></i>
+                                        <span class="fw-semibold flex-grow-1">{{ $link->displayLabel() }}</span>
+                                        <i class="bi bi-arrow-up-right text-muted small"></i>
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
                 @if ($profile->favorites->isNotEmpty())
                     <div class="card border-0 shadow-sm mt-4">
                         <div class="card-body p-4 p-md-5">

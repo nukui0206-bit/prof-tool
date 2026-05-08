@@ -50,6 +50,9 @@
                     <a href="{{ route('mypage.favorites.index') }}" class="btn btn-outline-primary btn-sm">
                         <i class="bi bi-hash"></i> マイタグを編集
                     </a>
+                    <a href="{{ route('mypage.links.index') }}" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-link-45deg"></i> SNSリンクを編集
+                    </a>
                 </div>
             </div>
         </div>
@@ -89,7 +92,7 @@
         </div>
 
         <div class="alert alert-warning small mb-0">
-            <strong>Phase 5 時点：</strong> SNSリンク・テーマ切替・いいね・足あとなどは Phase 6 以降で順次追加されます。
+            <strong>Phase 6 時点：</strong> テーマ切替・いいね・足あとなどは Phase 7 以降で順次追加されます。
         </div>
     @else
         <div class="alert alert-danger">

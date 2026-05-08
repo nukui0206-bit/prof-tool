@@ -3,6 +3,7 @@
 use App\Http\Controllers\Mypage\AnswerController as MypageAnswerController;
 use App\Http\Controllers\Mypage\FavoriteController as MypageFavoriteController;
 use App\Http\Controllers\Mypage\ProfileController as MypageProfileController;
+use App\Http\Controllers\Mypage\SocialLinkController as MypageSocialLinkController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicProfileController;
 use Illuminate\Support\Facades\Route;
@@ -53,6 +54,12 @@ Route::middleware(['auth', 'verified'])->prefix('mypage')->name('mypage.')->grou
     Route::patch('/favorites/reorder', [MypageFavoriteController::class, 'reorder'])->name('favorites.reorder');
     Route::patch('/favorites/{favorite}', [MypageFavoriteController::class, 'update'])->name('favorites.update');
     Route::delete('/favorites/{favorite}', [MypageFavoriteController::class, 'destroy'])->name('favorites.destroy');
+
+    Route::get('/links', [MypageSocialLinkController::class, 'index'])->name('links.index');
+    Route::post('/links', [MypageSocialLinkController::class, 'store'])->name('links.store');
+    Route::patch('/links/reorder', [MypageSocialLinkController::class, 'reorder'])->name('links.reorder');
+    Route::patch('/links/{link}', [MypageSocialLinkController::class, 'update'])->name('links.update');
+    Route::delete('/links/{link}', [MypageSocialLinkController::class, 'destroy'])->name('links.destroy');
 });
 
 require __DIR__.'/auth.php';

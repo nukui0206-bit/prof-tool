@@ -31,6 +31,11 @@
                             マイタグ
                         </x-nav-link>
                     </li>
+                    <li class="nav-item">
+                        <x-nav-link :href="route('mypage.links.index')" :active="request()->routeIs('mypage.links.*')">
+                            SNSリンク
+                        </x-nav-link>
+                    </li>
                 @endauth
             </ul>
 
@@ -64,6 +69,9 @@
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('mypage.favorites.index')">
                                     マイタグ
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('mypage.links.index')">
+                                    SNSリンク
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('profile.edit')">
                                     アカウント設定
