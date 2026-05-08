@@ -5,11 +5,33 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{{ $profile->nickname }} — {{ config('app.name', 'ProfTool') }}</title>
 
-        <meta property="og:title" content="{{ $profile->nickname }} のプロフィール">
-        <meta property="og:description" content="{{ \Illuminate\Support\Str::limit($profile->bio ?? '', 80) }}">
+        @php
+            $description = \Illuminate\Support\Str::limit($profile->bio ?? "{$profile->nickname} のプロフィールページ", 80);
+            $ogImage = $profile->avatar_path ? url(\Illuminate\Support\Facades\Storage::url($profile->avatar_path)) : null;
+            $shareText = "{$profile->nickname} のプロフィール";
+        @endphp
+
+        <meta name="description" content="{{ $description }}">
+        <link rel="canonical" href="{{ $profile->public_url }}">
+
         <meta property="og:type" content="profile">
+        <meta property="og:title" content="{{ $profile->nickname }} のプロフィール">
+        <meta property="og:description" content="{{ $description }}">
         <meta property="og:url" content="{{ $profile->public_url }}">
-        <meta name="twitter:card" content="summary">
+        <meta property="og:site_name" content="{{ config('app.name', 'ProfTool') }}">
+        <meta property="og:locale" content="ja_JP">
+        @if ($ogImage)
+            <meta property="og:image" content="{{ $ogImage }}">
+            <meta property="og:image:alt" content="{{ $profile->nickname }} のアイコン">
+        @endif
+
+        <meta name="twitter:card" content="{{ $ogImage ? 'summary' : 'summary' }}">
+        <meta name="twitter:title" content="{{ $profile->nickname }} のプロフィール">
+        <meta name="twitter:description" content="{{ $description }}">
+        @if ($ogImage)
+            <meta name="twitter:image" content="{{ $ogImage }}">
+        @endif
+
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,17 +46,19 @@
     @endphp
     <body class="d-flex flex-column min-vh-100 profile-public-page theme-{{ $themeKey }}"
           @if($accentStyle) style="{{ $accentStyle }}" @endif>
-        <main class="flex-grow-1 py-5">
-            <div class="container" style="max-width: 36rem;">
+        <main class="flex-grow-1 py-4 py-md-5">
+            <div class="container px-3" style="max-width: 36rem;">
                 <div class="card border-0 shadow-sm pt-public-card">
                     <div class="card-body p-4 p-md-5 text-center">
                         @if ($profile->avatar_path)
-                            <img src="{{ Storage::url($profile->avatar_path) }}"
+                            <img src="{{ \Illuminate\Support\Facades\Storage::url($profile->avatar_path) }}"
                                  alt="{{ $profile->nickname }} のアイコン"
+                                 loading="eager"
                                  class="rounded-circle mx-auto mb-3 d-block"
                                  style="width: 88px; height: 88px; object-fit: cover; border: 1px solid var(--pt-public-card-border);">
                         @else
                             <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle text-white fw-bold pt-public-avatar"
+                                 aria-label="{{ $profile->nickname }} のアイコン"
                                  style="width: 88px; height: 88px; font-size: 2rem;">
                                 {{ mb_substr($profile->nickname, 0, 1) }}
                             </div>
@@ -44,34 +68,51 @@
                         <p class="small pt-public-muted mb-3">@{{ $profile->slug }}</p>
 
                         @if ($profile->bio)
-                            <p style="white-space: pre-wrap;">{{ $profile->bio }}</p>
+                            <p class="mb-0" style="white-space: pre-wrap;">{{ $profile->bio }}</p>
                         @else
-                            <p class="small pt-public-muted fst-italic">まだ自己紹介が登録されていません。</p>
+                            <p class="small pt-public-muted fst-italic mb-0">まだ自己紹介が登録されていません。</p>
                         @endif
 
-                        <div class="d-flex justify-content-center align-items-center gap-3 small mt-4 pt-3 border-top" style="border-color: var(--pt-public-card-border) !important;">
-                            <span class="pt-public-muted"><i class="bi bi-eye"></i> {{ number_format($profile->view_count) }}</span>
+                        <div class="d-flex justify-content-center align-items-center flex-wrap gap-2 gap-sm-3 small mt-4 pt-3 border-top" style="border-color: var(--pt-public-card-border) !important;">
+                            <span class="pt-public-muted"><i class="bi bi-eye" aria-hidden="true"></i> {{ number_format($profile->view_count) }}</span>
 
                             @auth
                                 @if (auth()->id() === $profile->user_id)
-                                    <span class="pt-public-muted"><i class="bi bi-heart"></i> <span id="like-count">{{ number_format($profile->like_count) }}</span></span>
+                                    <span class="pt-public-muted"><i class="bi bi-heart" aria-hidden="true"></i> <span id="like-count">{{ number_format($profile->like_count) }}</span></span>
                                 @else
                                     <button type="button" id="like-btn"
                                             data-url="{{ route('public.profile.like', ['slug' => $profile->slug]) }}"
                                             data-liked="{{ $isLiked ? '1' : '0' }}"
+                                            aria-label="{{ $isLiked ? 'いいねを取り消す' : 'いいねする' }}"
                                             class="btn btn-sm d-inline-flex align-items-center gap-1"
                                             style="border: 1px solid var(--pt-public-accent); color: {{ $isLiked ? '#fff' : 'var(--pt-public-accent)' }}; background: {{ $isLiked ? 'var(--pt-public-accent)' : 'transparent' }}; transition: background 0.15s, color 0.15s;">
-                                        <i class="bi bi-heart{{ $isLiked ? '-fill' : '' }}" id="like-icon"></i>
+                                        <i class="bi bi-heart{{ $isLiked ? '-fill' : '' }}" id="like-icon" aria-hidden="true"></i>
                                         <span id="like-count">{{ number_format($profile->like_count) }}</span>
                                     </button>
                                 @endif
                             @else
                                 <a href="{{ route('login') }}" class="pt-public-muted text-decoration-none">
-                                    <i class="bi bi-heart"></i> ログインしていいね（<span id="like-count">{{ number_format($profile->like_count) }}</span>）
+                                    <i class="bi bi-heart" aria-hidden="true"></i> ログインしていいね（<span id="like-count">{{ number_format($profile->like_count) }}</span>）
                                 </a>
                             @endauth
                         </div>
                     </div>
+                </div>
+
+                {{-- シェアボタン --}}
+                <div class="d-flex flex-wrap gap-2 justify-content-center mt-3">
+                    <a href="https://twitter.com/intent/tweet?url={{ urlencode($profile->public_url) }}&text={{ urlencode($shareText) }}"
+                       target="_blank" rel="noopener noreferrer"
+                       class="btn btn-sm pt-public-link-btn d-inline-flex align-items-center gap-2">
+                        <i class="bi bi-twitter-x" aria-hidden="true"></i>
+                        X でシェア
+                    </a>
+                    <button type="button" id="share-copy-btn"
+                            data-url="{{ $profile->public_url }}"
+                            class="btn btn-sm pt-public-link-btn d-inline-flex align-items-center gap-2">
+                        <i class="bi bi-clipboard" aria-hidden="true"></i>
+                        <span id="share-copy-label">URL をコピー</span>
+                    </button>
                 </div>
 
                 @if ($profile->socialLinks->isNotEmpty())
@@ -82,9 +123,9 @@
                                 @foreach ($profile->socialLinks as $link)
                                     <a href="{{ $link->url }}" target="_blank" rel="noopener noreferrer"
                                        class="btn text-start d-inline-flex align-items-center gap-3 py-2 pt-public-link-btn">
-                                        <i class="bi {{ $link->iconClass() }} fs-5"></i>
-                                        <span class="fw-semibold flex-grow-1">{{ $link->displayLabel() }}</span>
-                                        <i class="bi bi-arrow-up-right small pt-public-muted"></i>
+                                        <i class="bi {{ $link->iconClass() }} fs-5" aria-hidden="true"></i>
+                                        <span class="fw-semibold flex-grow-1 text-truncate">{{ $link->displayLabel() }}</span>
+                                        <i class="bi bi-arrow-up-right small pt-public-muted" aria-hidden="true"></i>
                                     </a>
                                 @endforeach
                             </div>
@@ -131,45 +172,64 @@
             </div>
         </main>
 
-        @auth
-            @if (auth()->id() !== $profile->user_id)
-                <script>
-                    (function () {
+        <script>
+            (function () {
+                // URL をコピー
+                const copyBtn = document.getElementById('share-copy-btn');
+                const copyLabel = document.getElementById('share-copy-label');
+                if (copyBtn) {
+                    copyBtn.addEventListener('click', async () => {
+                        try {
+                            await navigator.clipboard.writeText(copyBtn.dataset.url);
+                            const original = copyLabel.textContent;
+                            copyLabel.textContent = 'コピー完了';
+                            setTimeout(() => { copyLabel.textContent = original; }, 1800);
+                        } catch (e) {
+                            // フォールバック：fallback として prompt を出す
+                            window.prompt('URL をコピーしてください', copyBtn.dataset.url);
+                        }
+                    });
+                }
+
+                @auth
+                    @if (auth()->id() !== $profile->user_id)
+                        // いいねトグル
                         const btn = document.getElementById('like-btn');
-                        if (!btn) return;
+                        if (btn) {
+                            const csrf = document.querySelector('meta[name="csrf-token"]')?.content;
+                            const icon = document.getElementById('like-icon');
+                            const count = document.getElementById('like-count');
 
-                        const csrf = document.querySelector('meta[name="csrf-token"]')?.content;
-                        const icon = document.getElementById('like-icon');
-                        const count = document.getElementById('like-count');
-
-                        btn.addEventListener('click', async () => {
-                            if (btn.disabled) return;
-                            btn.disabled = true;
-                            try {
-                                const res = await fetch(btn.dataset.url, {
-                                    method: 'POST',
-                                    headers: {
-                                        'X-CSRF-TOKEN': csrf,
-                                        'Accept': 'application/json',
-                                        'Content-Type': 'application/json',
-                                    },
-                                });
-                                if (!res.ok) throw new Error('failed');
-                                const data = await res.json();
-                                count.textContent = data.count.toLocaleString();
-                                icon.className = 'bi bi-heart' + (data.liked ? '-fill' : '');
-                                btn.dataset.liked = data.liked ? '1' : '0';
-                                btn.style.background = data.liked ? 'var(--pt-public-accent)' : 'transparent';
-                                btn.style.color = data.liked ? '#fff' : 'var(--pt-public-accent)';
-                            } catch (e) {
-                                alert('いいねに失敗しました。再度お試しください。');
-                            } finally {
-                                btn.disabled = false;
-                            }
-                        });
-                    })();
-                </script>
-            @endif
-        @endauth
+                            btn.addEventListener('click', async () => {
+                                if (btn.disabled) return;
+                                btn.disabled = true;
+                                try {
+                                    const res = await fetch(btn.dataset.url, {
+                                        method: 'POST',
+                                        headers: {
+                                            'X-CSRF-TOKEN': csrf,
+                                            'Accept': 'application/json',
+                                            'Content-Type': 'application/json',
+                                        },
+                                    });
+                                    if (!res.ok) throw new Error('failed');
+                                    const data = await res.json();
+                                    count.textContent = data.count.toLocaleString();
+                                    icon.className = 'bi bi-heart' + (data.liked ? '-fill' : '');
+                                    btn.dataset.liked = data.liked ? '1' : '0';
+                                    btn.style.background = data.liked ? 'var(--pt-public-accent)' : 'transparent';
+                                    btn.style.color = data.liked ? '#fff' : 'var(--pt-public-accent)';
+                                    btn.setAttribute('aria-label', data.liked ? 'いいねを取り消す' : 'いいねする');
+                                } catch (e) {
+                                    alert('いいねに失敗しました。再度お試しください。');
+                                } finally {
+                                    btn.disabled = false;
+                                }
+                            });
+                        }
+                    @endif
+                @endauth
+            })();
+        </script>
     </body>
 </html>
