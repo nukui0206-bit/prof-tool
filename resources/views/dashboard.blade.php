@@ -3,8 +3,6 @@
         <h1 class="h4 fw-bold mb-0">マイページ</h1>
     </x-slot>
 
-    @php($profile = Auth::user()->profile)
-
     @if ($profile)
         {{-- 公開プロフ URL カード --}}
         <div class="card border-0 shadow-sm mb-4">
@@ -39,93 +37,183 @@
                         </button>
                     </div>
                 </div>
-
-                <div class="d-flex flex-wrap gap-2 mt-3 pt-3 border-top">
-                    <a href="{{ route('mypage.profile.edit') }}" class="btn btn-primary btn-sm">
-                        <i class="bi bi-pencil"></i> プロフィールを編集
-                    </a>
-                    <a href="{{ route('mypage.answers.edit') }}" class="btn btn-outline-primary btn-sm">
-                        <i class="bi bi-chat-dots"></i> 質問に答える
-                    </a>
-                    <a href="{{ route('mypage.favorites.index') }}" class="btn btn-outline-primary btn-sm">
-                        <i class="bi bi-hash"></i> マイタグを編集
-                    </a>
-                    <a href="{{ route('mypage.links.index') }}" class="btn btn-outline-primary btn-sm">
-                        <i class="bi bi-link-45deg"></i> SNSリンクを編集
-                    </a>
-                    <a href="{{ route('mypage.theme.edit') }}" class="btn btn-outline-primary btn-sm">
-                        <i class="bi bi-palette"></i> テーマ設定
-                    </a>
-                </div>
             </div>
         </div>
 
-        {{-- KPI --}}
-        <div class="row g-3 mb-4">
-            <div class="col-6 col-md-4">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body">
-                        <div class="small text-muted">プロフ閲覧数</div>
-                        <div class="h3 fw-bold mb-0">{{ number_format($profile->view_count) }}</div>
-                    </div>
+        {{-- プロフ充実度メーター --}}
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h2 class="h6 fw-bold mb-0">プロフ充実度</h2>
+                    <span class="fw-bold {{ $completionRate === 100 ? 'text-success' : '' }}">{{ $completionRate }}%</span>
                 </div>
-            </div>
-            <div class="col-6 col-md-4">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body">
-                        <div class="small text-muted">いいね</div>
-                        <div class="h3 fw-bold mb-0">{{ number_format($profile->like_count) }}</div>
-                    </div>
+                <div class="progress mb-3" style="height: 8px;">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ $completionRate }}"
+                         aria-valuemin="0" aria-valuemax="100"
+                         style="width: {{ $completionRate }}%; background: var(--pt-gradient);"></div>
                 </div>
-            </div>
-            <div class="col-12 col-md-4">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body">
-                        <div class="small text-muted">公開状態</div>
-                        <div class="h5 fw-bold mb-0 mt-1">
-                            @if ($profile->is_published)
-                                <span class="badge text-bg-success">公開中</span>
+
+                @php
+                    $checkItems = [
+                        ['key' => 'avatar',  'label' => 'アイコン画像', 'route' => route('mypage.profile.edit')],
+                        ['key' => 'bio',     'label' => '自己紹介',    'route' => route('mypage.profile.edit')],
+                        ['key' => 'tags',    'label' => 'マイタグ',    'route' => route('mypage.favorites.index')],
+                        ['key' => 'links',   'label' => 'SNSリンク',   'route' => route('mypage.links.index')],
+                        ['key' => 'answers', 'label' => '質問の回答',  'route' => route('mypage.answers.edit')],
+                    ];
+                @endphp
+
+                <div class="row g-2 small">
+                    @foreach ($checkItems as $item)
+                        <div class="col-6 col-md-4">
+                            @if ($checks[$item['key']])
+                                <span class="text-success"><i class="bi bi-check-circle-fill"></i> {{ $item['label'] }}</span>
                             @else
-                                <span class="badge text-bg-secondary">非公開</span>
+                                <a href="{{ $item['route'] }}" class="text-muted text-decoration-none">
+                                    <i class="bi bi-circle"></i> {{ $item['label'] }}
+                                </a>
                             @endif
                         </div>
+                    @endforeach
+                </div>
+
+                @if ($completionRate < 100)
+                    <div class="form-text small mt-3 mb-0">
+                        未設定の項目をクリックして埋めましょう。プロフが充実するほど、訪問者から興味を持ってもらえます。
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        {{-- KPI 4 枚（累計 + 直近7日） --}}
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="small text-muted">累計 閲覧数</div>
+                        <div class="h4 fw-bold mb-0">{{ number_format($stats['view_count']) }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="small text-muted">累計 いいね</div>
+                        <div class="h4 fw-bold mb-0">{{ number_format($stats['like_count']) }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="small text-muted">直近 7 日 足あと</div>
+                        <div class="h4 fw-bold mb-0" style="color: var(--pt-primary);">+{{ number_format($stats['footprints_last_7d']) }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="small text-muted">直近 7 日 いいね</div>
+                        <div class="h4 fw-bold mb-0" style="color: var(--pt-accent);">+{{ number_format($stats['likes_last_7d']) }}</div>
                     </div>
                 </div>
             </div>
         </div>
 
+        {{-- 公開状態 + 質問回答進捗 --}}
         <div class="row g-3 mb-4">
             <div class="col-12 col-md-6">
-                <a href="{{ route('mypage.likes.index') }}" class="text-decoration-none text-reset">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="small text-muted mb-1">いいねした人</div>
-                                <div class="fw-semibold">あなたが ♡ を押したプロフを一覧</div>
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="small text-muted mb-1">公開状態</div>
+                            <div class="h6 fw-bold mb-0">
+                                @if ($profile->is_published)
+                                    <span class="badge text-bg-success">公開中</span>
+                                @else
+                                    <span class="badge text-bg-secondary">非公開</span>
+                                @endif
                             </div>
-                            <i class="bi bi-heart fs-4" style="color: var(--pt-accent);"></i>
                         </div>
+                        <a href="{{ route('mypage.profile.edit') }}" class="btn btn-outline-secondary btn-sm">変更</a>
                     </div>
-                </a>
+                </div>
             </div>
             <div class="col-12 col-md-6">
-                <a href="{{ route('mypage.footprints.index') }}" class="text-decoration-none text-reset">
+                <a href="{{ route('mypage.answers.edit') }}" class="text-decoration-none text-reset">
                     <div class="card border-0 shadow-sm h-100">
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
-                                <div class="small text-muted mb-1">足あと</div>
-                                <div class="fw-semibold">あなたのプロフを訪問した人</div>
+                                <div class="small text-muted mb-1">質問への回答</div>
+                                <div class="h6 fw-bold mb-0">
+                                    {{ $stats['answers_count'] }} / {{ $stats['questions_total'] }} 問
+                                </div>
                             </div>
-                            <i class="bi bi-shoe-prints fs-4" style="color: var(--pt-primary);"></i>
+                            <i class="bi bi-chat-dots fs-4" style="color: var(--pt-primary);"></i>
                         </div>
                     </div>
                 </a>
             </div>
         </div>
 
-        <div class="alert alert-warning small mb-0">
-            <strong>Phase 9 時点：</strong> 通報機能・管理画面は Phase 11 以降で追加されます。
+        {{-- 最近の足あと + いいね一覧導線 --}}
+        <div class="row g-3 mb-4">
+            <div class="col-12 col-lg-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h2 class="h6 fw-bold mb-0">最近の足あと</h2>
+                            <a href="{{ route('mypage.footprints.index') }}" class="small">すべて見る</a>
+                        </div>
+
+                        @if ($recentFootprints->isEmpty())
+                            <p class="text-muted small mb-0">まだ足あとがありません。プロフィール URL を SNS で共有してみましょう。</p>
+                        @else
+                            @foreach ($recentFootprints as $fp)
+                                @php($vp = $fp->visitor->profile)
+                                @if ($vp)
+                                    <a href="{{ $vp->public_url }}" target="_blank" rel="noopener"
+                                       class="d-flex align-items-center gap-2 mb-2 text-decoration-none text-reset">
+                                        @if ($vp->avatar_path)
+                                            <img src="{{ Storage::url($vp->avatar_path) }}" alt=""
+                                                 class="rounded-circle flex-shrink-0"
+                                                 style="width: 36px; height: 36px; object-fit: cover;">
+                                        @else
+                                            <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold flex-shrink-0"
+                                                 style="width: 36px; height: 36px; background: var(--pt-gradient); font-size: 0.875rem;">
+                                                {{ mb_substr($vp->nickname, 0, 1) }}
+                                            </div>
+                                        @endif
+                                        <div class="flex-grow-1 min-w-0">
+                                            <div class="small fw-semibold text-truncate">{{ $vp->nickname }}</div>
+                                            <div class="small text-muted">{{ $fp->visited_at->diffForHumans() }}</div>
+                                        </div>
+                                    </a>
+                                @endif
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <a href="{{ route('mypage.likes.index') }}" class="text-decoration-none text-reset">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            <div>
+                                <div class="small text-muted mb-1">いいねした人</div>
+                                <div class="fw-semibold mb-2">あなたが ♡ を押したプロフを一覧で確認</div>
+                                <p class="small text-muted mb-0">気になるプロフィールを見つけたらタップしてプロフへ。</p>
+                            </div>
+                            <div class="text-end">
+                                <i class="bi bi-heart fs-4" style="color: var(--pt-accent);"></i>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
         </div>
+
     @else
         <div class="alert alert-danger">
             プロフィールが見つかりません。お手数ですが管理者にお問い合わせください。
