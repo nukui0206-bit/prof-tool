@@ -79,14 +79,21 @@
                 </div>
 
                 <div class="mb-2">
-                    <x-input-label value="公開URL（slug）" />
-                    <div class="d-flex align-items-center gap-2 small">
-                        <code>/u/{{ $profile->slug }}</code>
-                        <span class="badge text-bg-light">変更不可</span>
+                    <x-input-label for="slug" value="公開URL" />
+                    <div class="input-group">
+                        <span class="input-group-text small">/u/</span>
+                        <input type="text" id="slug" name="slug"
+                               value="{{ old('slug', $profile->slug) }}"
+                               minlength="3" maxlength="30"
+                               pattern="[a-zA-Z0-9_\-]+"
+                               class="form-control" required
+                               style="font-family: monospace;">
                     </div>
                     <div class="form-text small">
-                        slug の変更は今後のフェーズで対応予定です。
+                        半角英数 / <code>-</code> / <code>_</code> の 3〜30 文字。大文字は自動で小文字に変換されます。<br>
+                        <strong class="text-danger">変更すると以前の URL（<code>/u/{{ $profile->slug }}</code>）は使えなくなります。</strong>
                     </div>
+                    <x-input-error :messages="$errors->get('slug')" />
                 </div>
             </div>
         </div>
