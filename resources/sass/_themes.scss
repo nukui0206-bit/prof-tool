@@ -1,9 +1,13 @@
 // 公開プロフィールページ（/u/{slug}）用のテーマ。
 // body.profile-public-page.theme-{key} の組み合わせで切替。
 // profile.theme_color が設定されていれば inline style で --pt-public-accent を上書きする。
+// マイページのテーマ設定画面では .theme-preview に同じセレクタを当てて
+// 縮小プレビューを表示する。
 
-.profile-public-page {
-  // ---- default (modern) ----
+// ---- 共通変数とユーティリティ（公開ページとプレビュー両方で使う） ----
+.profile-public-page,
+.theme-preview {
+  // default (modern)
   --pt-public-bg-grad-1: rgba(168, 85, 247, 0.13);
   --pt-public-bg-grad-2: rgba(236, 72, 153, 0.11);
   --pt-public-bg-grad-3: rgba(99, 102, 241, 0.09);
@@ -17,12 +21,6 @@
   --pt-public-avatar-grad: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
   --pt-public-font: 'Plus Jakarta Sans', 'Noto Sans JP', system-ui, sans-serif;
 
-  background:
-    radial-gradient(ellipse 900px 600px at 15% 0%,  var(--pt-public-bg-grad-1), transparent 60%),
-    radial-gradient(ellipse 700px 500px at 90% 25%, var(--pt-public-bg-grad-2), transparent 60%),
-    radial-gradient(ellipse 800px 500px at 30% 65%, var(--pt-public-bg-grad-3), transparent 65%),
-    radial-gradient(ellipse 600px 400px at 85% 95%, var(--pt-public-bg-grad-4), transparent 60%),
-    var(--pt-public-bg-base);
   color: var(--pt-public-text);
   font-family: var(--pt-public-font);
 
@@ -40,8 +38,8 @@
     background: var(--pt-public-avatar-grad);
   }
 
-  // accent からの派生色は color-mix で動的に。これで profile.theme_color を inline 上書きしても
-  // タグ背景・ホバー色がアクセントカラーに自動追従する。
+  // accent からの派生色は color-mix で動的に。
+  // theme_color の inline 上書きでもタグ背景が自動追従する。
   .pt-public-tag {
     background: color-mix(in srgb, var(--pt-public-accent) 12%, transparent);
     color: var(--pt-public-accent);
@@ -64,8 +62,28 @@
   }
 }
 
+// ---- 公開ページのみ：派手なラジアルグラデ背景 ----
+.profile-public-page {
+  background:
+    radial-gradient(ellipse 900px 600px at 15% 0%,  var(--pt-public-bg-grad-1), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 90% 25%, var(--pt-public-bg-grad-2), transparent 60%),
+    radial-gradient(ellipse 800px 500px at 30% 65%, var(--pt-public-bg-grad-3), transparent 65%),
+    radial-gradient(ellipse 600px 400px at 85% 95%, var(--pt-public-bg-grad-4), transparent 60%),
+    var(--pt-public-bg-base);
+}
+
+// ---- プレビュー：base 色のみのシンプル背景（小さい枠ではグラデが見えにくいため） ----
+.theme-preview {
+  background: var(--pt-public-bg-base);
+  border: 1px solid var(--pt-public-card-border);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  overflow: hidden;
+}
+
 // ---- 平成ピンク ----
-.profile-public-page.theme-heisei_pink {
+.profile-public-page.theme-heisei_pink,
+.theme-preview.theme-heisei_pink {
   --pt-public-bg-grad-1: rgba(255, 102, 204, 0.20);
   --pt-public-bg-grad-2: rgba(255, 153, 204, 0.18);
   --pt-public-bg-grad-3: rgba(255, 200, 230, 0.15);
@@ -81,7 +99,8 @@
 }
 
 // ---- ガラケー風 ----
-.profile-public-page.theme-garake_green {
+.profile-public-page.theme-garake_green,
+.theme-preview.theme-garake_green {
   --pt-public-bg-grad-1: transparent;
   --pt-public-bg-grad-2: transparent;
   --pt-public-bg-grad-3: transparent;
@@ -97,7 +116,8 @@
 }
 
 // ---- 推し活ネオン ----
-.profile-public-page.theme-oshikatsu {
+.profile-public-page.theme-oshikatsu,
+.theme-preview.theme-oshikatsu {
   --pt-public-bg-grad-1: rgba(255, 0, 128, 0.25);
   --pt-public-bg-grad-2: rgba(0, 220, 255, 0.18);
   --pt-public-bg-grad-3: rgba(255, 200, 0, 0.12);
@@ -113,7 +133,8 @@
 }
 
 // ---- パステル ----
-.profile-public-page.theme-pastel {
+.profile-public-page.theme-pastel,
+.theme-preview.theme-pastel {
   --pt-public-bg-grad-1: rgba(255, 200, 230, 0.30);
   --pt-public-bg-grad-2: rgba(200, 230, 255, 0.25);
   --pt-public-bg-grad-3: rgba(255, 240, 200, 0.20);
