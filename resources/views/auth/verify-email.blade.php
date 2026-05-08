@@ -23,4 +23,17 @@
             <button type="submit" class="btn btn-link small text-muted">ログアウト</button>
         </form>
     </div>
+
+    @if (app()->environment('local'))
+        <hr class="my-4">
+        <form method="POST" action="{{ route('dev.verify') }}">
+            @csrf
+            <button type="submit" class="btn btn-outline-secondary btn-sm w-100">
+                🔧 開発用：メール認証をスキップする
+            </button>
+            <div class="form-text small text-center mt-2">
+                ローカル開発環境のみ表示されます（本番では非表示）
+            </div>
+        </form>
+    @endif
 </x-guest-layout>
