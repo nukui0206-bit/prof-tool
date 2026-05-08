@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Profile;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class PublicProfileController extends Controller
@@ -27,6 +28,8 @@ class PublicProfileController extends Controller
         // それまでは閲覧ごとに単純 increment。
         $profile->increment('view_count');
 
-        return view('public.profile', compact('profile'));
+        $isLiked = $profile->isLikedBy(Auth::user());
+
+        return view('public.profile', compact('profile', 'isLiked'));
     }
 }

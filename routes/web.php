@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\Mypage\AnswerController as MypageAnswerController;
 use App\Http\Controllers\Mypage\FavoriteController as MypageFavoriteController;
 use App\Http\Controllers\Mypage\ProfileController as MypageProfileController;
@@ -20,6 +21,12 @@ Route::view('/privacy', 'static.privacy')->name('privacy');
 Route::get('/u/{slug}', [PublicProfileController::class, 'show'])
     ->where('slug', '[A-Za-z0-9_-]+')
     ->name('public.profile');
+
+// いいねトグル（ログイン必須、Ajax JSON）
+Route::post('/u/{slug}/like', [LikeController::class, 'toggle'])
+    ->where('slug', '[A-Za-z0-9_-]+')
+    ->middleware('auth')
+    ->name('public.profile.like');
 
 // ローカル開発用：メール認証スキップ。
 // MAIL_MAILER=log で認証リンクが見えない状態を回避するため、APP_ENV=local の時だけ有効。
@@ -64,6 +71,8 @@ Route::middleware(['auth', 'verified'])->prefix('mypage')->name('mypage.')->grou
 
     Route::get('/theme', [MypageThemeController::class, 'edit'])->name('theme.edit');
     Route::patch('/theme', [MypageThemeController::class, 'update'])->name('theme.update');
+
+    Route::get('/likes', [LikeController::class, 'index'])->name('likes.index');
 });
 
 require __DIR__.'/auth.php';

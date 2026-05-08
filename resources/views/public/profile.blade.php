@@ -10,6 +10,7 @@
         <meta property="og:type" content="profile">
         <meta property="og:url" content="{{ $profile->public_url }}">
         <meta name="twitter:card" content="summary">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,9 +49,27 @@
                             <p class="small pt-public-muted fst-italic">まだ自己紹介が登録されていません。</p>
                         @endif
 
-                        <div class="d-flex justify-content-center gap-3 small pt-public-muted mt-4 pt-3 border-top" style="border-color: var(--pt-public-card-border) !important;">
-                            <span><i class="bi bi-eye"></i> {{ number_format($profile->view_count) }}</span>
-                            <span><i class="bi bi-heart"></i> {{ number_format($profile->like_count) }}</span>
+                        <div class="d-flex justify-content-center align-items-center gap-3 small mt-4 pt-3 border-top" style="border-color: var(--pt-public-card-border) !important;">
+                            <span class="pt-public-muted"><i class="bi bi-eye"></i> {{ number_format($profile->view_count) }}</span>
+
+                            @auth
+                                @if (auth()->id() === $profile->user_id)
+                                    <span class="pt-public-muted"><i class="bi bi-heart"></i> <span id="like-count">{{ number_format($profile->like_count) }}</span></span>
+                                @else
+                                    <button type="button" id="like-btn"
+                                            data-url="{{ route('public.profile.like', ['slug' => $profile->slug]) }}"
+                                            data-liked="{{ $isLiked ? '1' : '0' }}"
+                                            class="btn btn-sm d-inline-flex align-items-center gap-1"
+                                            style="border: 1px solid var(--pt-public-accent); color: {{ $isLiked ? '#fff' : 'var(--pt-public-accent)' }}; background: {{ $isLiked ? 'var(--pt-public-accent)' : 'transparent' }}; transition: background 0.15s, color 0.15s;">
+                                        <i class="bi bi-heart{{ $isLiked ? '-fill' : '' }}" id="like-icon"></i>
+                                        <span id="like-count">{{ number_format($profile->like_count) }}</span>
+                                    </button>
+                                @endif
+                            @else
+                                <a href="{{ route('login') }}" class="pt-public-muted text-decoration-none">
+                                    <i class="bi bi-heart"></i> ログインしていいね（<span id="like-count">{{ number_format($profile->like_count) }}</span>）
+                                </a>
+                            @endauth
                         </div>
                     </div>
                 </div>
@@ -111,5 +130,46 @@
                 </p>
             </div>
         </main>
+
+        @auth
+            @if (auth()->id() !== $profile->user_id)
+                <script>
+                    (function () {
+                        const btn = document.getElementById('like-btn');
+                        if (!btn) return;
+
+                        const csrf = document.querySelector('meta[name="csrf-token"]')?.content;
+                        const icon = document.getElementById('like-icon');
+                        const count = document.getElementById('like-count');
+
+                        btn.addEventListener('click', async () => {
+                            if (btn.disabled) return;
+                            btn.disabled = true;
+                            try {
+                                const res = await fetch(btn.dataset.url, {
+                                    method: 'POST',
+                                    headers: {
+                                        'X-CSRF-TOKEN': csrf,
+                                        'Accept': 'application/json',
+                                        'Content-Type': 'application/json',
+                                    },
+                                });
+                                if (!res.ok) throw new Error('failed');
+                                const data = await res.json();
+                                count.textContent = data.count.toLocaleString();
+                                icon.className = 'bi bi-heart' + (data.liked ? '-fill' : '');
+                                btn.dataset.liked = data.liked ? '1' : '0';
+                                btn.style.background = data.liked ? 'var(--pt-public-accent)' : 'transparent';
+                                btn.style.color = data.liked ? '#fff' : 'var(--pt-public-accent)';
+                            } catch (e) {
+                                alert('いいねに失敗しました。再度お試しください。');
+                            } finally {
+                                btn.disabled = false;
+                            }
+                        });
+                    })();
+                </script>
+            @endif
+        @endauth
     </body>
 </html>

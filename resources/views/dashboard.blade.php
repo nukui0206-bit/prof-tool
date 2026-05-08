@@ -94,8 +94,20 @@
             </div>
         </div>
 
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                    <div class="small text-muted mb-1">あなたが押したいいね</div>
+                    <div class="fw-semibold">マイページの「いいねした人」一覧でまとめて確認できます。</div>
+                </div>
+                <a href="{{ route('mypage.likes.index') }}" class="btn btn-outline-primary btn-sm">
+                    <i class="bi bi-heart"></i> いいねした人を見る
+                </a>
+            </div>
+        </div>
+
         <div class="alert alert-warning small mb-0">
-            <strong>Phase 7 時点：</strong> いいね・足あと・通報・管理画面などは Phase 8 以降で順次追加されます。
+            <strong>Phase 8 時点：</strong> 足あと・通報・管理画面などは Phase 9 以降で順次追加されます。
         </div>
     @else
         <div class="alert alert-danger">
