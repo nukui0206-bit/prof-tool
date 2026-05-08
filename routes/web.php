@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\Mypage\AnswerController as MypageAnswerController;
 use App\Http\Controllers\Mypage\FavoriteController as MypageFavoriteController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\Mypage\SocialLinkController as MypageSocialLinkControll
 use App\Http\Controllers\Mypage\ThemeController as MypageThemeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicProfileController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,6 +19,12 @@ Route::get('/', function () {
 
 Route::view('/terms', 'static.terms')->name('terms');
 Route::view('/privacy', 'static.privacy')->name('privacy');
+
+Route::get('/contact', [ContactController::class, 'show'])->name('contact');
+Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
+
+Route::get('/report', [ReportController::class, 'create'])->name('report.create');
+Route::post('/report', [ReportController::class, 'store'])->name('report.store');
 
 // 公開プロフィールページ（slug は SlugGenerator::RESERVED で除外済の語のみ許可される）
 Route::get('/u/{slug}', [PublicProfileController::class, 'show'])

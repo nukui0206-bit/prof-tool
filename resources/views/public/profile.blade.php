@@ -166,8 +166,15 @@
                     </div>
                 @endif
 
-                <p class="text-center mt-4 mb-0 small pt-public-muted">
+                <p class="text-center mt-4 mb-2 small pt-public-muted">
                     <a href="/" class="text-decoration-none pt-public-muted">{{ config('app.name', 'ProfTool') }}</a> で作られたプロフィール
+                </p>
+
+                <p class="text-center mb-0 small pt-public-muted">
+                    <a href="{{ route('report.create', ['target_type' => 'profile', 'target_id' => $profile->id]) }}"
+                       class="text-decoration-none pt-public-muted" style="font-size: 0.75rem;">
+                        <i class="bi bi-flag" aria-hidden="true"></i> このプロフィールを通報
+                    </a>
                 </p>
             </div>
         </main>

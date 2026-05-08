@@ -104,9 +104,10 @@
         <footer class="border-top py-4 mt-auto" style="background: rgba(255,255,255,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
             <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 small text-muted">
                 <span>© {{ date('Y') }} ProfTool</span>
-                <div class="d-flex gap-3">
+                <div class="d-flex gap-3 flex-wrap">
                     <a href="{{ route('terms') }}" class="text-muted text-decoration-none">利用規約</a>
                     <a href="{{ route('privacy') }}" class="text-muted text-decoration-none">プライバシー</a>
+                    <a href="{{ route('contact') }}" class="text-muted text-decoration-none">お問い合わせ</a>
                 </div>
             </div>
         </footer>
