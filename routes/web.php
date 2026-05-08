@@ -66,6 +66,9 @@ Route::middleware(['auth', 'verified'])->prefix('mypage')->name('mypage.')->grou
 
     Route::get('/answers', [MypageAnswerController::class, 'edit'])->name('answers.edit');
     Route::patch('/answers', [MypageAnswerController::class, 'update'])->name('answers.update');
+    Route::post('/answers/custom', [MypageAnswerController::class, 'storeCustom'])->name('answers.custom.store');
+    Route::patch('/answers/custom/{question}', [MypageAnswerController::class, 'updateCustom'])->name('answers.custom.update');
+    Route::delete('/answers/custom/{question}', [MypageAnswerController::class, 'destroyCustom'])->name('answers.custom.destroy');
 
     Route::get('/favorites', [MypageFavoriteController::class, 'index'])->name('favorites.index');
     Route::post('/favorites', [MypageFavoriteController::class, 'store'])->name('favorites.store');

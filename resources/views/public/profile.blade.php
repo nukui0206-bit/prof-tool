@@ -148,7 +148,15 @@
                     </div>
                 @endif
 
-                @php($answers = $profile->answers->sortBy(fn ($a) => $a->question->sort_order ?? 999))
+                @php
+                    // 表示する回答：運営質問（owner_user_id=null）または このプロフ所有者が作ったカスタム質問。
+                    // 他人のカスタム質問が混ざらないよう所有者チェックする。
+                    $answers = $profile->answers->filter(function ($a) use ($profile) {
+                        if (! $a->question || ! $a->question->is_active) return false;
+                        $owner = $a->question->owner_user_id;
+                        return $owner === null || $owner === $profile->user_id;
+                    })->sortBy(fn ($a) => $a->question->sort_order ?? 999);
+                @endphp
 
                 @if ($answers->isNotEmpty())
                     <div class="card border-0 shadow-sm mt-4 pt-public-card">

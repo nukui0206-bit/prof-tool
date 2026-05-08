@@ -18,8 +18,12 @@ class PublicProfileController extends Controller
             ->with([
                 'user',
                 'theme',
+                // 回答は question を eager load。
+                // 公開する質問は: 運営質問（owner_user_id NULL）または プロフ所有者のカスタム質問。
                 'answers' => fn ($q) => $q->with('question')
-                    ->whereHas('question', fn ($qq) => $qq->where('is_active', true)),
+                    ->whereHas('question', function ($qq) {
+                        $qq->where('is_active', true);
+                    }),
                 'favorites',
                 'socialLinks',
             ])

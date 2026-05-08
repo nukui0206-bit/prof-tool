@@ -55,6 +55,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Like::class);
     }
 
+    public function customQuestions(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Question::class, 'owner_user_id');
+    }
+
     public function isAdmin(): bool
     {
         return $this->role === self::ROLE_ADMIN;
