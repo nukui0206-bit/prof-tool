@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Mypage\AnswerController as MypageAnswerController;
+use App\Http\Controllers\Mypage\FavoriteController as MypageFavoriteController;
 use App\Http\Controllers\Mypage\ProfileController as MypageProfileController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicProfileController;
@@ -46,6 +47,12 @@ Route::middleware(['auth', 'verified'])->prefix('mypage')->name('mypage.')->grou
 
     Route::get('/answers', [MypageAnswerController::class, 'edit'])->name('answers.edit');
     Route::patch('/answers', [MypageAnswerController::class, 'update'])->name('answers.update');
+
+    Route::get('/favorites', [MypageFavoriteController::class, 'index'])->name('favorites.index');
+    Route::post('/favorites', [MypageFavoriteController::class, 'store'])->name('favorites.store');
+    Route::patch('/favorites/reorder', [MypageFavoriteController::class, 'reorder'])->name('favorites.reorder');
+    Route::patch('/favorites/{favorite}', [MypageFavoriteController::class, 'update'])->name('favorites.update');
+    Route::delete('/favorites/{favorite}', [MypageFavoriteController::class, 'destroy'])->name('favorites.destroy');
 });
 
 require __DIR__.'/auth.php';

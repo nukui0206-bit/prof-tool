@@ -44,6 +44,11 @@ class Profile extends Model
         return $this->hasMany(Answer::class);
     }
 
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class)->orderBy('sort_order');
+    }
+
     public function getPublicUrlAttribute(): string
     {
         return route('public.profile', ['slug' => $this->slug]);

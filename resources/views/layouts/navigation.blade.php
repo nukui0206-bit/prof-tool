@@ -26,6 +26,11 @@
                             質問への回答
                         </x-nav-link>
                     </li>
+                    <li class="nav-item">
+                        <x-nav-link :href="route('mypage.favorites.index')" :active="request()->routeIs('mypage.favorites.*')">
+                            好きなもの
+                        </x-nav-link>
+                    </li>
                 @endauth
             </ul>
 
@@ -56,6 +61,9 @@
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('mypage.answers.edit')">
                                     質問への回答
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('mypage.favorites.index')">
+                                    好きなもの
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('profile.edit')">
                                     アカウント設定

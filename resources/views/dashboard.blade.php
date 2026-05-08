@@ -47,6 +47,9 @@
                     <a href="{{ route('mypage.answers.edit') }}" class="btn btn-outline-primary btn-sm">
                         <i class="bi bi-chat-dots"></i> 質問に答える
                     </a>
+                    <a href="{{ route('mypage.favorites.index') }}" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-heart"></i> 好きなものを追加
+                    </a>
                 </div>
             </div>
         </div>
@@ -86,7 +89,7 @@
         </div>
 
         <div class="alert alert-warning small mb-0">
-            <strong>Phase 4 時点：</strong> 好きなものリスト・SNSリンク・テーマ切替などは Phase 5 以降で順次追加されます。
+            <strong>Phase 5 時点：</strong> SNSリンク・テーマ切替・いいね・足あとなどは Phase 6 以降で順次追加されます。
         </div>
     @else
         <div class="alert alert-danger">
