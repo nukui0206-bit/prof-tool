@@ -10,7 +10,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
         @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     </head>
-    <body class="d-flex flex-column min-vh-100">
+    <body class="d-flex flex-column min-vh-100 pt-lp-bg">
         <nav class="navbar navbar-expand-lg">
             <div class="container">
                 <a class="navbar-brand" href="/">
@@ -101,7 +101,7 @@
             </section>
         </main>
 
-        <footer class="border-top py-4 mt-auto" style="background: var(--pt-surface);">
+        <footer class="border-top py-4 mt-auto" style="background: rgba(255,255,255,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
             <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 small text-muted">
                 <span>© {{ date('Y') }} ProfTool</span>
                 <div class="d-flex gap-3">

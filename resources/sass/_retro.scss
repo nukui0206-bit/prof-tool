@@ -295,14 +295,20 @@ footer {
   font-size: 0.875rem;
 }
 
+// ---- LP body backdrop（welcome 全体に敷くグラデ） ----
+.pt-lp-bg {
+  background:
+    radial-gradient(ellipse 900px 600px at 15% 0%,  rgba(168, 85, 247, 0.13), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 90% 25%, rgba(236, 72, 153, 0.11), transparent 60%),
+    radial-gradient(ellipse 800px 500px at 30% 65%, rgba(99, 102, 241, 0.09), transparent 65%),
+    radial-gradient(ellipse 600px 400px at 85% 95%, rgba(168, 85, 247, 0.08), transparent 60%),
+    var(--pt-bg);
+}
+
 // ---- Hero (LP) ----
 .pt-hero {
   position: relative;
   padding: 5rem 0 6rem;
-  background:
-    radial-gradient(ellipse 800px 400px at 20% 0%, rgba(168, 85, 247, 0.08), transparent 60%),
-    radial-gradient(ellipse 600px 400px at 80% 10%, rgba(236, 72, 153, 0.08), transparent 60%),
-    var(--pt-bg);
   overflow: hidden;
 }
 
