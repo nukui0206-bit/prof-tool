@@ -2,21 +2,20 @@
 
 namespace App\Providers;
 
+use App\Services\Storage\AvatarStorageInterface;
+use App\Services\Storage\LocalAvatarStorage;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            AvatarStorageInterface::class,
+            LocalAvatarStorage::class,
+        );
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         //

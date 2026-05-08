@@ -15,22 +15,40 @@
                         マイページ
                     </x-nav-link>
                 </li>
+                @auth
+                    <li class="nav-item">
+                        <x-nav-link :href="route('mypage.profile.edit')" :active="request()->routeIs('mypage.profile.*')">
+                            プロフィール編集
+                        </x-nav-link>
+                    </li>
+                @endauth
             </ul>
 
             <ul class="navbar-nav ms-auto align-items-lg-center">
                 @auth
+                    @php($navProfile = Auth::user()->profile)
                     <li class="nav-item dropdown">
                         <x-dropdown align="right">
                             <x-slot name="trigger">
                                 <span class="nav-link dropdown-toggle d-inline-flex align-items-center gap-2">
-                                    <span class="d-inline-flex align-items-center justify-content-center rounded-circle text-white" style="width: 28px; height: 28px; background: var(--pt-gradient); font-size: 0.75rem; font-weight: 700;">
-                                        {{ mb_substr(Auth::user()->name, 0, 1) }}
-                                    </span>
-                                    <span>{{ Auth::user()->name }}</span>
+                                    @if ($navProfile && $navProfile->avatar_path)
+                                        <img src="{{ Storage::url($navProfile->avatar_path) }}"
+                                             alt="avatar"
+                                             class="rounded-circle"
+                                             style="width: 28px; height: 28px; object-fit: cover;">
+                                    @else
+                                        <span class="d-inline-flex align-items-center justify-content-center rounded-circle text-white" style="width: 28px; height: 28px; background: var(--pt-gradient); font-size: 0.75rem; font-weight: 700;">
+                                            {{ mb_substr($navProfile->nickname ?? Auth::user()->name, 0, 1) }}
+                                        </span>
+                                    @endif
+                                    <span>{{ $navProfile->nickname ?? Auth::user()->name }}</span>
                                 </span>
                             </x-slot>
 
                             <x-slot name="content">
+                                <x-dropdown-link :href="route('mypage.profile.edit')">
+                                    プロフィール編集
+                                </x-dropdown-link>
                                 <x-dropdown-link :href="route('profile.edit')">
                                     アカウント設定
                                 </x-dropdown-link>

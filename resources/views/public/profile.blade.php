@@ -22,11 +22,17 @@
             <div class="container" style="max-width: 36rem;">
                 <div class="card border-0 shadow-sm">
                     <div class="card-body p-4 p-md-5 text-center">
-                        {{-- Avatar placeholder（Phase 3 で画像対応） --}}
-                        <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle text-white fw-bold"
-                             style="width: 88px; height: 88px; background: var(--pt-gradient); font-size: 2rem;">
-                            {{ mb_substr($profile->nickname, 0, 1) }}
-                        </div>
+                        @if ($profile->avatar_path)
+                            <img src="{{ Storage::url($profile->avatar_path) }}"
+                                 alt="{{ $profile->nickname }} のアイコン"
+                                 class="rounded-circle mx-auto mb-3 d-block"
+                                 style="width: 88px; height: 88px; object-fit: cover; border: 1px solid var(--pt-border);">
+                        @else
+                            <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle text-white fw-bold"
+                                 style="width: 88px; height: 88px; background: var(--pt-gradient); font-size: 2rem;">
+                                {{ mb_substr($profile->nickname, 0, 1) }}
+                            </div>
+                        @endif
 
                         <h1 class="h3 fw-bold mb-1">{{ $profile->nickname }}</h1>
                         <p class="small text-muted mb-3">@{{ $profile->slug }}</p>
