@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PublicProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -9,6 +10,11 @@ Route::get('/', function () {
 
 Route::view('/terms', 'static.terms')->name('terms');
 Route::view('/privacy', 'static.privacy')->name('privacy');
+
+// 公開プロフィールページ（slug は SlugGenerator::RESERVED で除外済の語のみ許可される）
+Route::get('/u/{slug}', [PublicProfileController::class, 'show'])
+    ->where('slug', '[A-Za-z0-9_-]+')
+    ->name('public.profile');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
