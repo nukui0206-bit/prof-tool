@@ -53,12 +53,12 @@
                 @if ($profile->favorites->isNotEmpty())
                     <div class="card border-0 shadow-sm mt-4">
                         <div class="card-body p-4 p-md-5">
-                            <h2 class="h6 fw-bold text-muted mb-3 text-center">♡ 好きなもの</h2>
+                            <h2 class="h6 fw-bold text-muted mb-3 text-center" style="letter-spacing: 0.1em;">TAGS</h2>
                             <div class="d-flex flex-wrap gap-2 justify-content-center">
                                 @foreach ($profile->favorites as $fav)
                                     <span class="badge rounded-pill px-3 py-2"
                                           style="background: rgba(99,102,241,0.08); color: var(--pt-primary); font-weight: 600; font-size: 0.9rem;">
-                                        {{ $fav->label }}
+                                        <span class="opacity-75">#</span>{{ $fav->label }}
                                     </span>
                                 @endforeach
                             </div>

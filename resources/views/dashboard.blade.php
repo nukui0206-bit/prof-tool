@@ -48,7 +48,7 @@
                         <i class="bi bi-chat-dots"></i> 質問に答える
                     </a>
                     <a href="{{ route('mypage.favorites.index') }}" class="btn btn-outline-primary btn-sm">
-                        <i class="bi bi-heart"></i> 好きなものを追加
+                        <i class="bi bi-hash"></i> マイタグを編集
                     </a>
                 </div>
             </div>
