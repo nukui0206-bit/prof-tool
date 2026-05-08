@@ -91,6 +91,12 @@
                                 <x-dropdown-link :href="route('profile.edit')">
                                     アカウント設定
                                 </x-dropdown-link>
+                                @if (Auth::user()->isAdmin())
+                                    <hr class="my-1">
+                                    <x-dropdown-link :href="route('admin.dashboard')">
+                                        🛠 管理画面
+                                    </x-dropdown-link>
+                                @endif
                                 <hr class="my-1">
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
