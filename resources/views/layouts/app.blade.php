@@ -7,14 +7,18 @@
 
         <title>{{ config('app.name', 'ProfTool') }}</title>
 
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+
         @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     </head>
     <body class="d-flex flex-column min-vh-100">
         @include('layouts.navigation')
 
         @isset($header)
-            <header class="bg-white border-bottom shadow-sm">
-                <div class="container py-3">
+            <header class="pt-page-heading">
+                <div class="container">
                     {{ $header }}
                 </div>
             </header>
@@ -26,8 +30,8 @@
             </div>
         </main>
 
-        <footer class="border-top bg-white py-3 mt-auto">
-            <div class="container small text-muted text-center">
+        <footer class="border-top py-4 mt-auto" style="background: var(--pt-surface);">
+            <div class="container small text-center">
                 © {{ date('Y') }} ProfTool
             </div>
         </footer>

@@ -1,14 +1,373 @@
-// 平成レトロ共通スタイル（Phase 7 のテーマと併用）
-// Phase 0 では最低限のベース変数のみ
+// ProfTool design tokens & global overrides
+// 「平成レトロ」感はテーマ機能（Phase 7）でプリセット提供。
+// ここではサービス全体のデフォルト世界観（最新 SaaS デザイン）を定義する。
 
 :root {
-  --retro-pink: #ff66cc;
-  --retro-cyan: #66ccff;
-  --retro-yellow: #ffee66;
-  --retro-bg: #fff8fc;
+  // ---- Color palette ----
+  --pt-bg: #fafafa;
+  --pt-surface: #ffffff;
+  --pt-border: #e5e7eb;
+  --pt-border-strong: #d1d5db;
+
+  --pt-text: #0f172a;
+  --pt-text-muted: #64748b;
+  --pt-text-subtle: #94a3b8;
+
+  --pt-primary: #6366f1;       // indigo-500
+  --pt-primary-dark: #4f46e5;  // indigo-600
+  --pt-accent: #ec4899;        // pink-500
+  --pt-accent-dark: #db2777;   // pink-600
+
+  --pt-success: #10b981;
+  --pt-warning: #f59e0b;
+  --pt-danger: #ef4444;
+
+  --pt-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+
+  // ---- Radius & shadow ----
+  --pt-radius-sm: 0.5rem;
+  --pt-radius: 0.75rem;
+  --pt-radius-lg: 1rem;
+  --pt-radius-pill: 999px;
+
+  --pt-shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --pt-shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --pt-shadow: 0 4px 12px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.04);
+  --pt-shadow-lg: 0 10px 30px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.05);
+
+  // ---- Bootstrap variable overrides via CSS vars ----
+  --bs-primary: var(--pt-primary);
+  --bs-primary-rgb: 99, 102, 241;
+  --bs-link-color: var(--pt-primary);
+  --bs-link-hover-color: var(--pt-primary-dark);
+  --bs-body-color: var(--pt-text);
+  --bs-body-bg: var(--pt-bg);
+  --bs-border-color: var(--pt-border);
+  --bs-secondary-color: var(--pt-text-muted);
 }
 
+// ---- Base ----
 body {
-  background-color: var(--retro-bg);
-  font-family: "Hiragino Mincho ProN", "ヒラギノ明朝 ProN", "メイリオ", Meiryo, serif;
+  font-family: 'Plus Jakarta Sans', 'Noto Sans JP', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.005em;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: 'Plus Jakarta Sans', 'Noto Sans JP', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+a {
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+// ---- Logo ----
+.pt-logo {
+  font-weight: 800;
+  font-size: 1.25rem;
+  letter-spacing: -0.03em;
+  color: var(--pt-text);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0;
+}
+
+.pt-logo-accent {
+  background: var(--pt-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  font-weight: 800;
+}
+
+// ---- Cards ----
+.card {
+  border: 1px solid var(--pt-border);
+  border-radius: var(--pt-radius-lg);
+  background: var(--pt-surface);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+// ---- Forms ----
+.form-control,
+.form-select {
+  background-color: var(--pt-surface);
+  border: 1px solid var(--pt-border);
+  border-radius: var(--pt-radius-sm);
+  padding: 0.625rem 0.875rem;
+  font-size: 0.95rem;
+  color: var(--pt-text);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--pt-primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.form-label {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--pt-text);
+  margin-bottom: 0.375rem;
+}
+
+.form-check-input:checked {
+  background-color: var(--pt-primary);
+  border-color: var(--pt-primary);
+}
+
+.form-check-input:focus {
+  border-color: var(--pt-primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+// ---- Buttons ----
+.btn {
+  font-weight: 600;
+  border-radius: var(--pt-radius-sm);
+  padding: 0.625rem 1.25rem;
+  transition: transform 0.1s ease, box-shadow 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: var(--pt-gradient);
+  border: none;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background: var(--pt-gradient);
+  filter: brightness(1.05);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.35);
+}
+
+.btn-primary:disabled {
+  background: var(--pt-text-subtle);
+}
+
+.btn-outline-secondary {
+  background: var(--pt-surface);
+  border: 1px solid var(--pt-border);
+  color: var(--pt-text);
+}
+
+.btn-outline-secondary:hover {
+  background: #f3f4f6;
+  border-color: var(--pt-border-strong);
+  color: var(--pt-text);
+}
+
+.btn-outline-primary {
+  background: transparent;
+  border: 1px solid var(--pt-primary);
+  color: var(--pt-primary);
+}
+
+.btn-outline-primary:hover {
+  background: var(--pt-primary);
+  color: #fff;
+}
+
+.btn-danger {
+  background: var(--pt-danger);
+  border: none;
+  color: #fff;
+}
+
+.btn-link {
+  color: var(--pt-primary);
+}
+
+.btn-lg {
+  padding: 0.875rem 1.75rem;
+  font-size: 1rem;
+}
+
+// ---- Navbar ----
+.navbar {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: saturate(180%) blur(8px);
+  -webkit-backdrop-filter: saturate(180%) blur(8px);
+  border-bottom: 1px solid var(--pt-border);
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.navbar-brand {
+  padding: 0;
+}
+
+.navbar .nav-link {
+  color: var(--pt-text-muted);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.15s ease;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+  color: var(--pt-text);
+}
+
+// ---- Dropdown ----
+.dropdown-menu {
+  border: 1px solid var(--pt-border);
+  border-radius: var(--pt-radius);
+  box-shadow: var(--pt-shadow-lg);
+  padding: 0.375rem;
+}
+
+.dropdown-item {
+  border-radius: calc(var(--pt-radius) - 0.375rem);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.925rem;
+  color: var(--pt-text);
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background: #f3f4f6;
+  color: var(--pt-text);
+}
+
+// ---- Alerts ----
+.alert {
+  border: 1px solid transparent;
+  border-radius: var(--pt-radius-sm);
+  font-size: 0.925rem;
+}
+
+.alert-success {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #065f46;
+}
+
+.alert-warning {
+  background: #fffbeb;
+  border-color: #fcd34d;
+  color: #92400e;
+}
+
+.alert-danger {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #991b1b;
+}
+
+// ---- Modal ----
+.modal-content {
+  border: 1px solid var(--pt-border);
+  border-radius: var(--pt-radius-lg);
+  box-shadow: var(--pt-shadow-lg);
+}
+
+.modal-header,
+.modal-footer {
+  border-color: var(--pt-border);
+}
+
+// ---- Footer ----
+footer {
+  color: var(--pt-text-subtle);
+  font-size: 0.875rem;
+}
+
+// ---- Hero (LP) ----
+.pt-hero {
+  position: relative;
+  padding: 5rem 0 6rem;
+  background:
+    radial-gradient(ellipse 800px 400px at 20% 0%, rgba(168, 85, 247, 0.08), transparent 60%),
+    radial-gradient(ellipse 600px 400px at 80% 10%, rgba(236, 72, 153, 0.08), transparent 60%),
+    var(--pt-bg);
+  overflow: hidden;
+}
+
+.pt-hero h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.pt-hero .lead {
+  font-size: 1.125rem;
+  color: var(--pt-text-muted);
+  max-width: 36rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pt-gradient-text {
+  background: var(--pt-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.pt-feature-card {
+  background: var(--pt-surface);
+  border: 1px solid var(--pt-border);
+  border-radius: var(--pt-radius-lg);
+  padding: 1.75rem;
+  height: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.pt-feature-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--pt-shadow);
+  border-color: var(--pt-border-strong);
+}
+
+.pt-feature-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--pt-radius);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(236, 72, 153, 0.12));
+  color: var(--pt-primary);
+  font-size: 1.125rem;
+  margin-bottom: 1rem;
+}
+
+// ---- Auth card ----
+.pt-auth-card {
+  background: var(--pt-surface);
+  border: 1px solid var(--pt-border);
+  border-radius: var(--pt-radius-lg);
+  box-shadow: var(--pt-shadow);
+  padding: 2rem;
+}
+
+// ---- Page heading ----
+.pt-page-heading {
+  background: transparent;
+  border-bottom: 1px solid var(--pt-border);
+  padding: 1.5rem 0;
 }

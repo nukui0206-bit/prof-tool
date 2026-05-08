@@ -3,82 +3,110 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{ config('app.name', 'ProfTool') }} — 現代版・前略プロフィール</title>
+        <title>{{ config('app.name', 'ProfTool') }} — あなたのすべてを、ひとつのページに。</title>
+        <meta name="description" content="ニックネーム・自己紹介・好きなもの・推し・SNSリンクを1ページにまとめて公開できる、あたらしい自己紹介ページサービス。">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
         @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     </head>
     <body class="d-flex flex-column min-vh-100">
-        <nav class="navbar navbar-expand-lg bg-white border-bottom shadow-sm">
+        <nav class="navbar navbar-expand-lg">
             <div class="container">
                 <a class="navbar-brand" href="/">
                     <x-application-logo />
                 </a>
-                <ul class="navbar-nav ms-auto align-items-lg-center">
+                <ul class="navbar-nav ms-auto align-items-lg-center flex-row gap-2">
                     @auth
-                        <li class="nav-item"><a class="btn btn-outline-primary" href="{{ url('/dashboard') }}">マイページ</a></li>
+                        <li class="nav-item"><a class="btn btn-outline-secondary" href="{{ url('/dashboard') }}">マイページ</a></li>
                     @else
-                        <li class="nav-item me-lg-2"><a class="nav-link" href="{{ route('login') }}">ログイン</a></li>
-                        <li class="nav-item"><a class="btn btn-primary" href="{{ route('register') }}">新規登録</a></li>
+                        <li class="nav-item"><a class="nav-link px-3" href="{{ route('login') }}">ログイン</a></li>
+                        <li class="nav-item"><a class="btn btn-primary" href="{{ route('register') }}">無料ではじめる</a></li>
                     @endauth
                 </ul>
             </div>
         </nav>
 
         <main class="flex-grow-1">
-            <section class="py-5 text-center" style="background: linear-gradient(180deg, #fff8fc 0%, #ffe6f5 100%);">
-                <div class="container py-4">
-                    <h1 class="display-5 fw-bold mb-3" style="font-family: 'Hiragino Mincho ProN', serif; color: #d6377f;">
-                        ✿ あなたのプロフ、もっと自由に。
+            {{-- Hero --}}
+            <section class="pt-hero">
+                <div class="container text-center" style="max-width: 56rem;">
+                    <span class="badge rounded-pill px-3 py-2 mb-3" style="background: rgba(99,102,241,0.08); color: var(--pt-primary); font-weight:600;">
+                        ✦ あたらしい自己紹介ページ、はじめました
+                    </span>
+                    <h1 class="fw-bold">
+                        あなたのすべてを、<br>
+                        <span class="pt-gradient-text">ひとつのページに。</span>
                     </h1>
-                    <p class="lead text-muted mb-4">
-                        平成の前略プロフィールを、いまのSNS時代へ。<br>
-                        好き・推し・自己紹介を、1ページに全部のせ。
+                    <p class="lead mt-3">
+                        ニックネーム・自己紹介・好きなもの・推し・SNS リンクを 1 ページにまとめて、URL ひとつで世界に届ける。
                     </p>
-                    <a href="{{ route('register') }}" class="btn btn-primary btn-lg px-4 me-2">いますぐ作る</a>
-                    <a href="{{ route('login') }}" class="btn btn-outline-secondary btn-lg px-4">ログイン</a>
+                    <div class="d-flex flex-column flex-sm-row gap-2 justify-content-center mt-4">
+                        <a href="{{ route('register') }}" class="btn btn-primary btn-lg px-4">無料ではじめる</a>
+                        <a href="#features" class="btn btn-outline-secondary btn-lg px-4">機能を見る</a>
+                    </div>
+                    <p class="small text-muted mt-3 mb-0">登録 30 秒・クレジットカード不要</p>
                 </div>
             </section>
 
-            <section class="py-5">
+            {{-- Features --}}
+            <section id="features" class="py-5">
                 <div class="container">
+                    <div class="text-center mb-5">
+                        <h2 class="fw-bold mb-2">あなただけの一枚にする、3 つの機能</h2>
+                        <p class="text-muted mb-0">作って 3 分、シェアして無限。</p>
+                    </div>
                     <div class="row g-4">
                         <div class="col-md-4">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="card-body">
-                                    <h2 class="h5 fw-bold">★ 質問テンプレで遊ぶ</h2>
-                                    <p class="small text-muted mb-0">
-                                        「最近ハマってるもの」「平成で一番好きな曲」など、運営が用意した質問に答えるだけで、あなたらしいプロフが完成。
-                                    </p>
-                                </div>
+                            <div class="pt-feature-card">
+                                <div class="pt-feature-icon"><i class="bi bi-question-circle-fill"></i></div>
+                                <h3 class="h5 fw-bold">質問テンプレで深掘り</h3>
+                                <p class="text-muted small mb-0">
+                                    「最近ハマってるもの」「無人島に1つ持ってくなら」など、答えるだけであなたらしさが伝わる質問を多数用意。
+                                </p>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="card-body">
-                                    <h2 class="h5 fw-bold">♡ 好き・推し・SNSをまとめて</h2>
-                                    <p class="small text-muted mb-0">
-                                        好きなものリスト・SNSリンク・自己紹介を1ページに。Lit.linkのように使えて、もっと自由。
-                                    </p>
-                                </div>
+                            <div class="pt-feature-card">
+                                <div class="pt-feature-icon"><i class="bi bi-heart-fill"></i></div>
+                                <h3 class="h5 fw-bold">好き・推し・SNS をまとめる</h3>
+                                <p class="text-muted small mb-0">
+                                    好きなものリストや SNS リンクを並べて、Lit.link のように。シェアしやすい URL もすぐ取得。
+                                </p>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="card-body">
-                                    <h2 class="h5 fw-bold">♪ 世界観を選ぶ</h2>
-                                    <p class="small text-muted mb-0">
-                                        平成ピンク／ガラケー緑／推し活ネオン／パステルなど、テーマで世界観を切り替え。
-                                    </p>
-                                </div>
+                            <div class="pt-feature-card">
+                                <div class="pt-feature-icon"><i class="bi bi-palette-fill"></i></div>
+                                <h3 class="h5 fw-bold">テーマで世界観を切替</h3>
+                                <p class="text-muted small mb-0">
+                                    パステル・ネオン・モノトーン・平成レトロ。ワンタップでページの雰囲気がまるごと変わる。
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
+
+            {{-- Bottom CTA --}}
+            <section class="py-5">
+                <div class="container">
+                    <div class="rounded-4 text-center p-5" style="background: var(--pt-gradient);">
+                        <h2 class="text-white fw-bold mb-2">あなたの「すき」を、世界へ。</h2>
+                        <p class="text-white opacity-75 mb-4">アカウント作成は 30 秒。今すぐあなただけの URL を手に入れよう。</p>
+                        <a href="{{ route('register') }}" class="btn btn-light btn-lg px-4 fw-semibold">無料ではじめる</a>
+                    </div>
+                </div>
+            </section>
         </main>
 
-        <footer class="border-top bg-white py-3">
-            <div class="container small text-muted text-center">
-                © {{ date('Y') }} ProfTool
+        <footer class="border-top py-4 mt-auto" style="background: var(--pt-surface);">
+            <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 small text-muted">
+                <span>© {{ date('Y') }} ProfTool</span>
+                <div class="d-flex gap-3">
+                    <a href="{{ route('terms') }}" class="text-muted text-decoration-none">利用規約</a>
+                    <a href="{{ route('privacy') }}" class="text-muted text-decoration-none">プライバシー</a>
+                </div>
             </div>
         </footer>
     </body>
