@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Mypage\AnswerController as MypageAnswerController;
 use App\Http\Controllers\Mypage\ProfileController as MypageProfileController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicProfileController;
@@ -42,6 +43,9 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified'])->prefix('mypage')->name('mypage.')->group(function () {
     Route::get('/profile', [MypageProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [MypageProfileController::class, 'update'])->name('profile.update');
+
+    Route::get('/answers', [MypageAnswerController::class, 'edit'])->name('answers.edit');
+    Route::patch('/answers', [MypageAnswerController::class, 'update'])->name('answers.update');
 });
 
 require __DIR__.'/auth.php';

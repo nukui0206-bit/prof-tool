@@ -37,10 +37,16 @@
                                 onclick="navigator.clipboard.writeText('{{ $profile->public_url }}'); this.innerText='コピー済';">
                             <i class="bi bi-clipboard"></i> URL をコピー
                         </button>
-                        <a href="{{ route('mypage.profile.edit') }}" class="btn btn-primary btn-sm">
-                            <i class="bi bi-pencil"></i> プロフィールを編集
-                        </a>
                     </div>
+                </div>
+
+                <div class="d-flex flex-wrap gap-2 mt-3 pt-3 border-top">
+                    <a href="{{ route('mypage.profile.edit') }}" class="btn btn-primary btn-sm">
+                        <i class="bi bi-pencil"></i> プロフィールを編集
+                    </a>
+                    <a href="{{ route('mypage.answers.edit') }}" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-chat-dots"></i> 質問に答える
+                    </a>
                 </div>
             </div>
         </div>
@@ -80,7 +86,7 @@
         </div>
 
         <div class="alert alert-warning small mb-0">
-            <strong>Phase 3 時点：</strong> 質問テンプレ・好きなものリスト・SNSリンク・テーマ切替などは Phase 4 以降で順次追加されます。
+            <strong>Phase 4 時点：</strong> 好きなものリスト・SNSリンク・テーマ切替などは Phase 5 以降で順次追加されます。
         </div>
     @else
         <div class="alert alert-danger">

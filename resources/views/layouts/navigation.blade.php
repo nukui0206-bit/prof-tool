@@ -21,6 +21,11 @@
                             プロフィール編集
                         </x-nav-link>
                     </li>
+                    <li class="nav-item">
+                        <x-nav-link :href="route('mypage.answers.edit')" :active="request()->routeIs('mypage.answers.*')">
+                            質問への回答
+                        </x-nav-link>
+                    </li>
                 @endauth
             </ul>
 
@@ -48,6 +53,9 @@
                             <x-slot name="content">
                                 <x-dropdown-link :href="route('mypage.profile.edit')">
                                     プロフィール編集
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('mypage.answers.edit')">
+                                    質問への回答
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('profile.edit')">
                                     アカウント設定

@@ -50,6 +50,24 @@
                     </div>
                 </div>
 
+                @php($answers = $profile->answers->sortBy(fn ($a) => $a->question->sort_order ?? 999))
+
+                @if ($answers->isNotEmpty())
+                    <div class="card border-0 shadow-sm mt-4">
+                        <div class="card-body p-4 p-md-5">
+                            <h2 class="h6 fw-bold text-muted mb-4 text-center">Q &amp; A</h2>
+                            @foreach ($answers as $answer)
+                                <div class="mb-3 pb-3 {{ $loop->last ? 'mb-0 pb-0' : 'border-bottom' }}">
+                                    <div class="small fw-semibold mb-1" style="color: var(--pt-primary);">
+                                        Q. {{ $answer->question->body }}
+                                    </div>
+                                    <div class="text-body" style="white-space: pre-wrap;">{{ $answer->body }}</div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
                 <p class="text-center mt-4 mb-0 small text-muted">
                     <a href="/" class="text-decoration-none">{{ config('app.name', 'ProfTool') }}</a> で作られたプロフィール
                 </p>

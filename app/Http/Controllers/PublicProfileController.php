@@ -13,7 +13,11 @@ class PublicProfileController extends Controller
         $profile = Profile::where('slug', $slug)
             ->where('is_published', true)
             ->whereHas('user', fn ($q) => $q->where('status', User::STATUS_ACTIVE))
-            ->with('user')
+            ->with([
+                'user',
+                'answers' => fn ($q) => $q->with('question')
+                    ->whereHas('question', fn ($qq) => $qq->where('is_active', true)),
+            ])
             ->firstOrFail();
 
         // Phase 9 で footprints テーブル + 24h 集約に置き換える。
