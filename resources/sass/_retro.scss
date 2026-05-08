@@ -1,0 +1,14 @@
+// 平成レトロ共通スタイル（Phase 7 のテーマと併用）
+// Phase 0 では最低限のベース変数のみ
+
+:root {
+  --retro-pink: #ff66cc;
+  --retro-cyan: #66ccff;
+  --retro-yellow: #ffee66;
+  --retro-bg: #fff8fc;
+}
+
+body {
+  background-color: var(--retro-bg);
+  font-family: "Hiragino Mincho ProN", "ヒラギノ明朝 ProN", "メイリオ", Meiryo, serif;
+}
