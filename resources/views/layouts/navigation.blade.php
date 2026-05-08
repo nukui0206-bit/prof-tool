@@ -85,6 +85,9 @@
                                 <x-dropdown-link :href="route('mypage.likes.index')">
                                     いいねした人
                                 </x-dropdown-link>
+                                <x-dropdown-link :href="route('mypage.footprints.index')">
+                                    足あと
+                                </x-dropdown-link>
                                 <x-dropdown-link :href="route('profile.edit')">
                                     アカウント設定
                                 </x-dropdown-link>

@@ -94,20 +94,37 @@
             </div>
         </div>
 
-        <div class="card border-0 shadow-sm mb-4">
-            <div class="card-body d-flex justify-content-between align-items-center flex-wrap gap-2">
-                <div>
-                    <div class="small text-muted mb-1">あなたが押したいいね</div>
-                    <div class="fw-semibold">マイページの「いいねした人」一覧でまとめて確認できます。</div>
-                </div>
-                <a href="{{ route('mypage.likes.index') }}" class="btn btn-outline-primary btn-sm">
-                    <i class="bi bi-heart"></i> いいねした人を見る
+        <div class="row g-3 mb-4">
+            <div class="col-12 col-md-6">
+                <a href="{{ route('mypage.likes.index') }}" class="text-decoration-none text-reset">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="small text-muted mb-1">いいねした人</div>
+                                <div class="fw-semibold">あなたが ♡ を押したプロフを一覧</div>
+                            </div>
+                            <i class="bi bi-heart fs-4" style="color: var(--pt-accent);"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-12 col-md-6">
+                <a href="{{ route('mypage.footprints.index') }}" class="text-decoration-none text-reset">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="small text-muted mb-1">足あと</div>
+                                <div class="fw-semibold">あなたのプロフを訪問した人</div>
+                            </div>
+                            <i class="bi bi-shoe-prints fs-4" style="color: var(--pt-primary);"></i>
+                        </div>
+                    </div>
                 </a>
             </div>
         </div>
 
         <div class="alert alert-warning small mb-0">
-            <strong>Phase 8 時点：</strong> 足あと・通報・管理画面などは Phase 9 以降で順次追加されます。
+            <strong>Phase 9 時点：</strong> 通報機能・管理画面は Phase 11 以降で追加されます。
         </div>
     @else
         <div class="alert alert-danger">

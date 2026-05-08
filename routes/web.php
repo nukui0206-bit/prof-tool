@@ -3,6 +3,7 @@
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\Mypage\AnswerController as MypageAnswerController;
 use App\Http\Controllers\Mypage\FavoriteController as MypageFavoriteController;
+use App\Http\Controllers\Mypage\FootprintController as MypageFootprintController;
 use App\Http\Controllers\Mypage\ProfileController as MypageProfileController;
 use App\Http\Controllers\Mypage\SocialLinkController as MypageSocialLinkController;
 use App\Http\Controllers\Mypage\ThemeController as MypageThemeController;
@@ -73,6 +74,8 @@ Route::middleware(['auth', 'verified'])->prefix('mypage')->name('mypage.')->grou
     Route::patch('/theme', [MypageThemeController::class, 'update'])->name('theme.update');
 
     Route::get('/likes', [LikeController::class, 'index'])->name('likes.index');
+
+    Route::get('/footprints', [MypageFootprintController::class, 'index'])->name('footprints.index');
 });
 
 require __DIR__.'/auth.php';

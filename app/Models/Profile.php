@@ -64,6 +64,11 @@ class Profile extends Model
         return $this->hasMany(Like::class);
     }
 
+    public function footprints(): HasMany
+    {
+        return $this->hasMany(Footprint::class);
+    }
+
     public function isLikedBy(?User $user): bool
     {
         if (! $user) {
