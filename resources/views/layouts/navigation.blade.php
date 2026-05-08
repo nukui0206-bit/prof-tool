@@ -36,6 +36,11 @@
                             SNSリンク
                         </x-nav-link>
                     </li>
+                    <li class="nav-item">
+                        <x-nav-link :href="route('mypage.theme.edit')" :active="request()->routeIs('mypage.theme.*')">
+                            テーマ
+                        </x-nav-link>
+                    </li>
                 @endauth
             </ul>
 
@@ -72,6 +77,9 @@
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('mypage.links.index')">
                                     SNSリンク
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('mypage.theme.edit')">
+                                    テーマ
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('profile.edit')">
                                     アカウント設定

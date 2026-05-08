@@ -1,5 +1,8 @@
 // Bootstrap 5 base
 @import "bootstrap/scss/bootstrap";
 
-// 共通レトロ拡張（Phase 0 では雛形のみ）
+// サービス全体のデフォルト UI（最新 SaaS デザイン）
 @import "retro";
+
+// 公開プロフィールページ用テーマ（Phase 7）
+@import "themes";

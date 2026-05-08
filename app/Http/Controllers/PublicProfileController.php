@@ -15,6 +15,7 @@ class PublicProfileController extends Controller
             ->whereHas('user', fn ($q) => $q->where('status', User::STATUS_ACTIVE))
             ->with([
                 'user',
+                'theme',
                 'answers' => fn ($q) => $q->with('question')
                     ->whereHas('question', fn ($qq) => $qq->where('is_active', true)),
                 'favorites',

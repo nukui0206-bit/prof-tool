@@ -4,6 +4,7 @@ use App\Http\Controllers\Mypage\AnswerController as MypageAnswerController;
 use App\Http\Controllers\Mypage\FavoriteController as MypageFavoriteController;
 use App\Http\Controllers\Mypage\ProfileController as MypageProfileController;
 use App\Http\Controllers\Mypage\SocialLinkController as MypageSocialLinkController;
+use App\Http\Controllers\Mypage\ThemeController as MypageThemeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicProfileController;
 use Illuminate\Support\Facades\Route;
@@ -60,6 +61,9 @@ Route::middleware(['auth', 'verified'])->prefix('mypage')->name('mypage.')->grou
     Route::patch('/links/reorder', [MypageSocialLinkController::class, 'reorder'])->name('links.reorder');
     Route::patch('/links/{link}', [MypageSocialLinkController::class, 'update'])->name('links.update');
     Route::delete('/links/{link}', [MypageSocialLinkController::class, 'destroy'])->name('links.destroy');
+
+    Route::get('/theme', [MypageThemeController::class, 'edit'])->name('theme.edit');
+    Route::patch('/theme', [MypageThemeController::class, 'update'])->name('theme.update');
 });
 
 require __DIR__.'/auth.php';

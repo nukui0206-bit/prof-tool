@@ -39,6 +39,11 @@ class Profile extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function theme(): BelongsTo
+    {
+        return $this->belongsTo(Theme::class);
+    }
+
     public function answers(): HasMany
     {
         return $this->hasMany(Answer::class);
